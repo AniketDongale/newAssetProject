@@ -4,7 +4,7 @@ package com.company.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 import com.company.entity.Assets;
 import com.company.entity.Employee;
@@ -12,6 +12,7 @@ import com.company.entity.Order;
 import com.company.entity.Ticket;
 import com.company.exceptions.DuplicateAsset;
 import com.company.exceptions.InvalidAssetId;
+import com.company.exceptions.InvalidEmployeeDetails;
 import com.company.exceptions.InvalidEmployeeId;
 import com.company.exceptions.InvalidOrderId;
 import com.company.exceptions.NoAssetsFound;
@@ -97,14 +98,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public String addEmployee(long id , Employee emp) throws NoAuthority, InvalidEmployeeId{
+	public String addEmployee(long id , Employee emp) throws NoAuthority, InvalidEmployeeId, InvalidEmployeeDetails{
 		 if(!empRepo.existsById(id)) {
 			 throw new InvalidEmployeeId(INVALID_EMP_ID);
 		 }
 		String save = null;
 		long ids = emp.getId();
-		Employee employee = empRepo.getReferenceById(id);
-		long level = employee.getUser().getUserId();
+		List<Employee> empids = empRepo.findByEmailId(emp.getEmailId());
+		if(empids.isEmpty()) {
+			throw new InvalidEmployeeDetails("Employee Email Id is already present");
+		}
+		long level = empRepo.getReferenceById(id).getUser().getUserId();
 		if (level<3) {
 			   throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}else{
@@ -152,7 +156,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return deleteStatus;
 		
 	}
-	
+	@Override
+	public List<Assets> searchAssetByName(long id , String name) throws NoAssetsFound, InvalidEmployeeId{
+		if(!empRepo.existsById(id)) {
+			 throw new InvalidEmployeeId(INVALID_EMP_ID);
+		}
+		List<Assets>assetsByName = assetRepo.findByAssetName(name);
+		if(assetsByName.isEmpty()) {
+			throw new NoAssetsFound("No asset Found");
+		}
+		return assetsByName;
+		
+	}
 	
 	
 	@Override

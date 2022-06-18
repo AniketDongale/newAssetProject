@@ -6,6 +6,7 @@ import com.company.entity.Employee;
 import com.company.entity.Ticket;
 import com.company.exceptions.DuplicateAsset;
 import com.company.exceptions.InvalidAssetId;
+import com.company.exceptions.InvalidEmployeeDetails;
 import com.company.exceptions.InvalidEmployeeId;
 import com.company.exceptions.InvalidOrderId;
 import com.company.exceptions.NoAssetsFound;
@@ -16,7 +17,7 @@ public interface EmployeeService {
 	
 	public String  raiseRequest(long id,long empId,long assetId) throws InvalidAssetId,InvalidEmployeeId ,NoAuthority, DuplicateAsset;
 	public String returnRequest(long id,long assetId)throws InvalidAssetId, NoAuthority, InvalidEmployeeId, InvalidOrderId;
-	public String addEmployee(long id , Employee emp) throws NoAuthority, InvalidEmployeeId;
+	public String addEmployee(long id , Employee emp) throws NoAuthority, InvalidEmployeeId, InvalidEmployeeDetails;
 	public String allocateOrder(long id,long orderId) throws NoAuthority, InvalidOrderId, InvalidEmployeeId ;
 	public String addAsset(long id,Assets asset) throws NoAuthority, DuplicateAsset, InvalidEmployeeId;
 	public String releaseOrder(long id, long orderId) throws NoAuthority, InvalidOrderId, InvalidEmployeeId;
@@ -28,5 +29,6 @@ public interface EmployeeService {
 	public String deleteEmployee(long id, long empId) throws InvalidEmployeeId, NoAuthority;
 	public String rejectOrder(long id, long orderId) throws NoAuthority, InvalidOrderId, InvalidEmployeeId;
 	public List<Ticket> showAllAllocatedOrder(long id) throws InvalidEmployeeId, NoAuthority, NoOrderFound;
+	List<Assets> searchAssetByName(long id, String name) throws NoAssetsFound, InvalidEmployeeId;
 	
 }

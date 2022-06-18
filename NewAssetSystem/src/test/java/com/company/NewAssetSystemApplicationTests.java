@@ -9,6 +9,7 @@ import com.company.entity.Assets;
 import com.company.entity.Employee;
 import com.company.exceptions.DuplicateAsset;
 import com.company.exceptions.InvalidAssetId;
+import com.company.exceptions.InvalidEmployeeDetails;
 import com.company.exceptions.InvalidEmployeeId;
 import com.company.exceptions.InvalidOrderId;
 import com.company.exceptions.NoAuthority;
@@ -43,7 +44,7 @@ class NewAssetSystemApplicationTests {
 	
 	@Test
 	@Transactional
-	public void saveEmployeeTest() throws InvalidAssetId, InvalidEmployeeId, NoAuthority, DuplicateAsset {
+    void saveEmployeeTest() throws InvalidAssetId, InvalidEmployeeId, NoAuthority, DuplicateAsset, InvalidEmployeeDetails {
 	    Set<Assets>assets = null;
 		Employee emp =new Employee();
 		emp.setAssets(assets);

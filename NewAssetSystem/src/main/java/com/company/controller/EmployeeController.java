@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.company.entity.Assets;
 import com.company.entity.Employee;
-import com.company.entity.Order;
 import com.company.entity.Ticket;
 import com.company.exceptions.DuplicateAsset;
 import com.company.exceptions.InvalidAssetId;
+import com.company.exceptions.InvalidEmployeeDetails;
 import com.company.exceptions.InvalidEmployeeId;
 import com.company.exceptions.InvalidOrderId;
 import com.company.exceptions.NoAssetsFound;
@@ -81,9 +81,14 @@ public class EmployeeController {
 		long orderId =  object.get("orderId").asLong();
 		return empService.releaseOrder(id,orderId);
 	}
+	@GetMapping(path="/{id}/assets/search",consumes = "application/json")
+	public List<Assets> searchAsset(@PathVariable long id ,@RequestBody ObjectNode object) throws NoAuthority ,InvalidOrderId, InvalidEmployeeId, NoAssetsFound{
+		String name =  object.get("assetName").asText();
+		return empService.searchAssetByName(id,name);
+	}
 	//Employee Add
 	@PostMapping(path ="/{id}/addemp")
-	public String createEmployee(@PathVariable("id") long id ,@RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId {
+	public String createEmployee(@PathVariable("id") long id ,@RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId, InvalidEmployeeDetails {
 		return empService.addEmployee(id, emp);
 	}
 	//Employee update
