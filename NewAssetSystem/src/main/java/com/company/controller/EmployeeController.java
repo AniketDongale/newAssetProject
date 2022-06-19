@@ -1,6 +1,10 @@
 package com.company.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import com.company.entity.Assets;
 import com.company.entity.Employee;
@@ -16,13 +20,17 @@ import com.company.exceptions.NoOrderFound;
 import com.company.service.EmployeeService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -81,6 +89,7 @@ public class EmployeeController {
 		long orderId =  object.get("orderId").asLong();
 		return empService.releaseOrder(id,orderId);
 	}
+	//search asset
 	@GetMapping(path="/{id}/assets/search",consumes = "application/json")
 	public List<Assets> searchAsset(@PathVariable long id ,@RequestBody ObjectNode object) throws NoAuthority ,InvalidOrderId, InvalidEmployeeId, NoAssetsFound{
 		String name =  object.get("assetName").asText();
@@ -88,7 +97,7 @@ public class EmployeeController {
 	}
 	//Employee Add
 	@PostMapping(path ="/{id}/addemp")
-	public String createEmployee(@PathVariable("id") long id ,@RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId, InvalidEmployeeDetails {
+	public String createEmployee(@PathVariable("id") long id ,@Valid @RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId, InvalidEmployeeDetails {
 		return empService.addEmployee(id, emp);
 	}
 	//Employee update

@@ -105,9 +105,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String save = null;
 		long ids = emp.getId();
 		List<Employee> empids = empRepo.findByEmailId(emp.getEmailId());
-		if(empids.isEmpty()) {
+		
+		if(!empids.isEmpty()) {
 			throw new InvalidEmployeeDetails("Employee Email Id is already present");
 		}
+		
 		long level = empRepo.getReferenceById(id).getUser().getUserId();
 		if (level<3) {
 			   throw new NoAuthority(NOT_HAVE_AUTHORITY);

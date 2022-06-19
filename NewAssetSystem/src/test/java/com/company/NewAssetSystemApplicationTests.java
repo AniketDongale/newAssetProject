@@ -49,8 +49,8 @@ class NewAssetSystemApplicationTests {
 		Employee emp =new Employee();
 		emp.setAssets(assets);
 		emp.setFirstName("Akash");
-		emp.setLastName("Haridas");
-		emp.setEmailId("akash@cg.com");
+		emp.setLastName("Hari");
+		emp.setEmailId("akasha@gmail.com");
 		emp.setManagerId(2L);
 		emp.setUser(userRepo.getReferenceById(1));
 		
