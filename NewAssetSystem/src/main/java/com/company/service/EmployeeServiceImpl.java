@@ -103,9 +103,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			 throw new InvalidEmployeeId(INVALID_EMP_ID);
 		 }
 		String save = null;
-		long ids = emp.getId();
-		List<Employee> empids = empRepo.findByEmailId(emp.getEmailId());
 		
+		List<Employee> empids = empRepo.findByEmailId(emp.getEmailId());
+		//empids.isEmpty() == false  -> 
 		if(!empids.isEmpty()) {
 			throw new InvalidEmployeeDetails("Employee Email Id is already present");
 		}
@@ -115,6 +115,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 			   throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}else{
 			empRepo.save(emp);
+			long ids = emp.getId();
+			
 			save = "Employee id = " + ids  + " added in system ";
 		}
 		return save;
@@ -133,7 +135,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (level<3) {
 			   throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}else{
-			empRepo.save(emp);
+			empRepo.saveAndFlush(emp);
 			saveStatus = "Employee id = " + emp.getId() + " Updated in system ";
 		}
 		return saveStatus;
@@ -334,6 +336,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return assetList;
 		}
 	}
+	
 	@Override
 	public List<Ticket> showAllPendingOrder(long id) throws InvalidEmployeeId , NoAuthority, NoOrderFound {
 		if(!empRepo.existsById(id)){

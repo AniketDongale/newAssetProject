@@ -4,10 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -72,9 +68,12 @@ public class GlobalExceptionHandler {
 	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
 	   Map<String, String> errors = new HashMap<>();
 	 
-	   ex.getBindingResult().getFieldErrors().forEach(error ->
-	           errors.put(error.getField(), error.getDefaultMessage()));
-	 
+		ex.getBindingResult().getAllErrors().forEach(error->{
+			
+			String msg = error.getDefaultMessage();
+			
+			errors.put("Error", msg);
+		});
 	   return errors;
 	}
 }

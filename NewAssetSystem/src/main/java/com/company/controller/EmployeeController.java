@@ -1,11 +1,7 @@
 package com.company.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
-
 import com.company.entity.Assets;
 import com.company.entity.Employee;
 import com.company.entity.Ticket;
@@ -20,21 +16,17 @@ import com.company.exceptions.NoOrderFound;
 import com.company.service.EmployeeService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/company" )
 public class EmployeeController {
 	
 	@Autowired
@@ -53,8 +45,7 @@ public class EmployeeController {
 	@PutMapping(path = "/{id}/order/return",consumes = "application/json")
 	public String returnOrder(@PathVariable("id") long id,@RequestBody ObjectNode object) throws InvalidAssetId, NoAuthority, InvalidEmployeeId, InvalidOrderId {
 		long orderId = object.get("orderId").asLong();
-		empService.returnRequest(id,orderId);
-		return "Order id "+orderId+" will return";
+		return empService.returnRequest(id,orderId);
 	}
 	
 	//allocate the order
@@ -71,6 +62,7 @@ public class EmployeeController {
 	public List<Ticket> showPendingRequest(@PathVariable("id")long id) throws InvalidEmployeeId, NoAuthority, NoOrderFound {
 		return empService.showAllPendingOrder(id);
 	}
+	
 	//reject the order
 	@PutMapping(path="/{id}/order/reject",consumes = "application/json")
 	public String rejectsAssetOrder(@PathVariable long id ,@RequestBody ObjectNode object) throws NoAuthority, InvalidOrderId, InvalidEmployeeId{
@@ -78,21 +70,24 @@ public class EmployeeController {
 		return empService.rejectOrder(id,orderId);
 		
 	}
+	
 	//get allocate order ticket
 	@GetMapping(path = "/{id}/orders/Allocated")
 	public List<Ticket> showAllocateRequest(@PathVariable("id")long id) throws InvalidEmployeeId, NoAuthority ,NoOrderFound{
-		return empService.showAllPendingOrder(id);
+		return empService.showAllAllocatedOrder(id);
 	}
+	
 		//Release order
 	@PutMapping(path="/{id}/order/release",consumes = "application/json")
 	public String RereleaseOrders(@PathVariable long id ,@RequestBody ObjectNode object) throws NoAuthority ,InvalidOrderId, InvalidEmployeeId{
 		long orderId =  object.get("orderId").asLong();
 		return empService.releaseOrder(id,orderId);
 	}
+	
 	//search asset
 	@GetMapping(path="/{id}/assets/search",consumes = "application/json")
-	public List<Assets> searchAsset(@PathVariable long id ,@RequestBody ObjectNode object) throws NoAuthority ,InvalidOrderId, InvalidEmployeeId, NoAssetsFound{
-		String name =  object.get("assetName").asText();
+	public List<Assets> searchAsset(@PathVariable long id ,@RequestBody Assets asset) throws NoAuthority ,InvalidOrderId, InvalidEmployeeId, NoAssetsFound{
+		String name = asset.getAssetName();
 		return empService.searchAssetByName(id,name);
 	}
 	//Employee Add
@@ -102,7 +97,7 @@ public class EmployeeController {
 	}
 	//Employee update
 	@PutMapping(path ="/{id}/updateemp",consumes = "application/json")
-	public String updateCompanyEmployee(@PathVariable("id") long id ,@RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId{
+	public String updateCompanyEmployee(@PathVariable("id") long id ,@Valid @RequestBody Employee emp) throws NoAuthority, InvalidEmployeeId{
 		return empService.updateEmployee(id, emp);
 	}
 	//Delete Employee
@@ -120,13 +115,13 @@ public class EmployeeController {
 	
 	//add asset
 	@PostMapping(path = "/{id}/asset/add",consumes = "application/json")
-	public String addNewAsset(@PathVariable("id") long id,@RequestBody Assets asset) throws NoAuthority, DuplicateAsset, InvalidEmployeeId {
+	public String addNewAsset(@PathVariable("id") long id,@Valid @RequestBody Assets asset) throws NoAuthority, DuplicateAsset, InvalidEmployeeId {
 		return empService.addAsset(id, asset);
 	}
 	
 	//update the asset
 	@PutMapping(path = "/{id}/asset/update",consumes = "application/json")
-	public String updateNewAsset(@PathVariable("id") long id,@RequestBody Assets asset) throws NoAuthority, InvalidAssetId, InvalidEmployeeId {
+	public String updateNewAsset(@PathVariable("id") long id,@Valid @RequestBody Assets asset) throws NoAuthority, InvalidAssetId, InvalidEmployeeId {
 		return empService.updateAsset(id, asset);
 	}
 	

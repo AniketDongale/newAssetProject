@@ -15,9 +15,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name= "Employee",
@@ -42,13 +42,16 @@ public class Employee {
 	private long id;
 	
 	@Column(nullable = false,length = 50)
-	@NotNull
-	@Size(min = 3, message = "First Name must have at least 3 characters")
+	@Size(min = 3, max = 50, message = "Invalid Employee Name please enter a vaild Employee first Name!")
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "Accepts only alphabets! re-enter the first name")
 	private String firstName;
 	
 	@Column(nullable = false,length = 50)
-	@Size(min =3 , message = "Last Name must have at least 3 characters")
+	@Size(min = 3, max = 50, message = "Invalid Employee Name please enter a vaild Employee last Name!")
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "Accepts only alphabets! re-enter the last name")
 	private String lastName;
+	
+	
 	@Column(nullable = false,length = 100)
 	@Email(message = "Email should be valid")
 	private String emailId;
