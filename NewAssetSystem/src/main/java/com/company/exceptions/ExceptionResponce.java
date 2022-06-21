@@ -4,6 +4,7 @@ package com.company.exceptions;
 import java.time.LocalDateTime;
 
 public class ExceptionResponce {
+	public static final String INVALID_ARGUMENTS = null;
 	private String errorMsg;
 	private String errorCode;
 	private LocalDateTime timeStamp;

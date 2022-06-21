@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.company.entity.Employee;
 import com.company.entity.Order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,10 @@ public interface OrderRepository extends JpaRepository<Order,Long>{
 	@Transactional
 	@Modifying
 	List<Order>findByStatus(String status);
+	
+	
+	@Transactional
+	@Modifying
+	List<Order>findByEmployee(Employee emp);
+	
 }

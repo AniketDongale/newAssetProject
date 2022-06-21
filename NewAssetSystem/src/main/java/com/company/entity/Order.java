@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name ="orders")
@@ -28,10 +29,12 @@ public class Order {
 	@GeneratedValue(
 			strategy = GenerationType.SEQUENCE,
 			generator = "order_sequence")
+	@Min(value = 1,message = "Put valid Order id ")
 	private long orderId;
 	
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="emp_id", nullable=false)
+    
 	private Employee employee;
 	
 	@OneToOne(fetch = FetchType.LAZY)

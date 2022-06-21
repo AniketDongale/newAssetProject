@@ -94,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}else {
 			throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}
-		return "order "+ordRepo.findById(orderId)+" will be returning";
+		return "order "+orderId+" will be returning";
 	}
 	
 	@Override
@@ -148,12 +148,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if(!empRepo.existsById(empId)) {
 			 throw new InvalidEmployeeId(INVALID_EMP_ID);
 		}
+		if(!empRepo.getReferenceById(empId).getAssets().isEmpty()) {
+			throw new NoAuthority("First collect the asset from the employee");
+			
+		}
+		List<Order>employeeOrder = ordRepo.findByEmployee(empRepo.getReferenceById(empId));
+		
 		String deleteStatus = null;		
 		long level = empRepo.getReferenceById(id).getUser().getUserId();
 		if (level<3) {
 			   throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}else {
-			
+			Iterable<Order>itrableList = employeeOrder;
+			ordRepo.deleteAll(itrableList);
 			empRepo.delete(empRepo.getReferenceById(empId));
 			deleteStatus = "Employee id = " + empId + " deleted from System" ;
 		}

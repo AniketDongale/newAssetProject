@@ -3,6 +3,8 @@ package com.company;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.HashSet;
 import java.util.Set;
 import javax.transaction.Transactional;
 import com.company.entity.Assets;
@@ -68,7 +70,7 @@ class NewAssetSystemApplicationTests {
 	@Test
 	@Transactional
 	void deleteEmployeeTest() throws NoAuthority, InvalidEmployeeId {
-		Set<Assets>assets = null;
+		Set<Assets>assets = new HashSet<Assets>();
 		Employee emp =new Employee();
 		emp.setAssets(assets);
 		emp.setFirstName("prasad");

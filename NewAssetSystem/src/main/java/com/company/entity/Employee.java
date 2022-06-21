@@ -14,9 +14,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 
 @Entity
@@ -42,18 +39,13 @@ public class Employee {
 	private long id;
 	
 	@Column(nullable = false,length = 50)
-	@Size(min = 3, max = 50, message = "Invalid Employee Name please enter a vaild Employee first Name!")
-	@Pattern(regexp = "^[a-zA-Z]*$", message = "Accepts only alphabets! re-enter the first name")
 	private String firstName;
 	
 	@Column(nullable = false,length = 50)
-	@Size(min = 3, max = 50, message = "Invalid Employee Name please enter a vaild Employee last Name!")
-	@Pattern(regexp = "^[a-zA-Z]*$", message = "Accepts only alphabets! re-enter the last name")
 	private String lastName;
 	
 	
 	@Column(nullable = false,length = 100)
-	@Email(message = "Email should be valid")
 	private String emailId;
 	
 	@OneToOne(targetEntity =  Users.class)

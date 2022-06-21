@@ -8,7 +8,9 @@ import javax.persistence.Id;
 public class Users {
 	
 	@Id
+	
 	private int userId;
+	
 	@Column(nullable = false , length = 50)
 	private String role;
 	
