@@ -4,7 +4,7 @@ package com.company.service;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.transaction.Transactional;
 
 import com.company.entity.Assets;
 import com.company.entity.Employee;
@@ -168,6 +168,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 	@Override
+	@Transactional
 	public List<Assets> searchAssetByName(long id , String name) throws NoAssetsFound, InvalidEmployeeId{
 		if(!empRepo.existsById(id)) {
 			 throw new InvalidEmployeeId(INVALID_EMP_ID);
