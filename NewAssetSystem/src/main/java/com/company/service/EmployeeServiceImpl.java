@@ -368,7 +368,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new NoAuthority(NOT_HAVE_AUTHORITY);
 		}
 		if(tickets.isEmpty()) {
-			throw new NoOrderFound("No order Allocated");
+			throw new NoOrderFound("No order pending");
 		}
 		return tickets;
 	}
